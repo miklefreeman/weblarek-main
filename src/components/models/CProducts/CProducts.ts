@@ -18,7 +18,7 @@ export class Products {
         return this.products;
     }
 
-    getProductByID(id: string): IProduct {
+    getProductById(id: string): IProduct {
         const finded = this.products.find(element => element.id === id);
         if (finded) return finded;
         else throw new Error('Item is not found');
