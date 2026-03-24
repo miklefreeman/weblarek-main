@@ -20,7 +20,7 @@ console.log('Товары в каталоге:', productsModel.getItems());
 console.log('Количество товаров:', productsModel.getItems().length);
 
 // Проверка получения товара по ID
-const testProduct = productsModel.getProductByID(apiProducts.items[0].id);
+const testProduct = productsModel.getProductById(apiProducts.items[0].id);
 console.log('Товар по ID:', testProduct);
 
 // 2. Тестируем корзину
