@@ -10,7 +10,7 @@ export class Basket {
     }
 
     addProduct(item: IProduct): void {
-        // Если товар без цены, просто не добавляем его
+        // Если товар без цены, просто не добавляем его и выводим предупреждение
         if (!item.price) {
             console.warn('Товар без цены не может быть добавлен в корзину:', item.title);
             return;
@@ -23,6 +23,7 @@ export class Basket {
         if (startPoint !== -1) {
             this.products.splice(startPoint, 1);
         } else {
+            // Если товар не найден, просто выводим предупреждение, не прерывая приложение
             console.warn('Товар не найден в корзине для удаления');
         }
     }
