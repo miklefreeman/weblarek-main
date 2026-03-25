@@ -1,55 +1,26 @@
-import {IOrderResponse, IProduct} from "../types";
-import {Api, ApiListResponse} from "./base/Api";
+import { IOrderResponse, IProduct, IOrder } from "../types";
+import { Api, ApiListResponse } from "./base/Api";
 
-export interface IFilmAPI {
+export interface IWebLarekAPI {
     getProductList: () => Promise<IProduct[]>;
     getProductItem: (id: string) => Promise<IProduct>;
-    orderProducts: (order: {
-        payment: string;
-        email: string;
-        phone: string;
-        address: string;
-        total: number;
-        items: any[];
-    }) => Promise<IOrderResponse>;
+    orderProducts: (order: IOrder) => Promise<IOrderResponse>;
 }
 
-export class WebLarekAPI extends Api implements IFilmAPI {
-    readonly cdn: string;
-
-    constructor(cdn: string, baseUrl: string, options?: RequestInit) {
-        super(baseUrl, options)
-        this.cdn = cdn;
+export class WebLarekAPI extends Api implements IWebLarekAPI {
+    constructor(baseUrl: string, options?: RequestInit) {
+        super(baseUrl, options);
     }
 
     getProductItem(id: string): Promise<IProduct> {
-        return this.get(`/product/${id}`).then(
-            (data: IProduct) => ({
-                ...data,
-                image: this.cdn + data.image
-            })
-        );
+        return this.get(`/product/${id}`);
     }
 
     getProductList(): Promise<IProduct[]> {
-        return this.get('/product').then((data: ApiListResponse<IProduct>) =>
-            data.items.map((item) => ({
-                ...item,
-                image: this.cdn + item.image
-            }))
-        );
+        return this.get('/product').then((data: ApiListResponse<IProduct>) => data.items);
     }
 
-    orderProducts(order: {
-        payment: string;
-        email: string;
-        phone: string;
-        address: string;
-        total: number;
-        items: any[];
-    }): Promise<IOrderResponse> {
-        return this.post('/order', order).then(
-            (data: IOrderResponse) => data
-        );
+    orderProducts(order: IOrder): Promise<IOrderResponse> {
+        return this.post('/order', order);
     }
 }

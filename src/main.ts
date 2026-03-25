@@ -53,12 +53,17 @@ console.log('После очистки:', buyerModel.getAllInfo());
 // ========== РАБОТА С API ==========
 console.log('\n=== ЗАПРОС К СЕРВЕРУ ===');
 
-const api = new WebLarekAPI(CDN_URL, API_URL);
+const api = new WebLarekAPI(API_URL);
 
 api.getProductList()
     .then(items => {
-        console.log('Товары с сервера:', items);
-        productsModel.setItems(items);
+        // Добавляем CDN к изображениям
+        const itemsWithImages = items.map(item => ({
+            ...item,
+            image: CDN_URL + item.image
+        }));
+        console.log('Товары с сервера:', itemsWithImages);
+        productsModel.setItems(itemsWithImages);
         console.log('Сохранено в модель каталога:', productsModel.getItems());
     })
     .catch(err => console.error('Ошибка при загрузке товаров:', err));
