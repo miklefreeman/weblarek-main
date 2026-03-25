@@ -10,14 +10,21 @@ export class Basket {
     }
 
     addProduct(item: IProduct): void {
-        if (!item.price) throw new Error('This item can not be bought');
+        // Если товар без цены, просто не добавляем его
+        if (!item.price) {
+            console.warn('Товар без цены не может быть добавлен в корзину:', item.title);
+            return;
+        }
         this.products.push(item);
     }
 
     removeProduct(id: string): void {
         const startPoint: number = this.products.findIndex(item => item.id === id);
-        if (startPoint !== -1) this.products.splice(startPoint, 1);
-        else throw new Error('There is no such element');
+        if (startPoint !== -1) {
+            this.products.splice(startPoint, 1);
+        } else {
+            console.warn('Товар не найден в корзине для удаления');
+        }
     }
 
     getAmount(): number {
