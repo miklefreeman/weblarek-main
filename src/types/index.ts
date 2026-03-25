@@ -34,3 +34,6 @@ export interface IOrderResponse {
 }
 
 export type OrderForm = Omit<IBuyer, 'total' | 'items'>;
+
+// Тип для ошибок валидации (добавлен по замечанию ревьюера)
+export type TErrors = Partial<Record<keyof IBuyer, string>>;

@@ -1,11 +1,8 @@
-import { IBuyer } from "../../types/index.ts";
-import { TPayment } from "../../types/index.ts";
-
-export type TErrors = Partial<Record<keyof IBuyer, string>>;
+import { IBuyer, TPayment, TErrors } from "../../types/index.ts";
 
 export class Buyer {
     protected buyer: IBuyer = {
-        payment: '',
+        payment: 'online', // допустимое значение по умолчанию
         email: '',
         phone: '',
         address: '',
@@ -31,7 +28,7 @@ export class Buyer {
 
     validate(): TErrors {
         const err: TErrors = {};
-        if (this.buyer.payment === '') err.payment = 'Не выбран вид оплаты';
+        if (!this.buyer.payment) err.payment = 'Не выбран вид оплаты';
         if (this.buyer.email === '') err.email = 'Укажите адрес электронной почты';
         if (this.buyer.phone === '') err.phone = 'Укажите номер мобильного телефона';
         if (this.buyer.address === '') err.address = 'Укажите адрес';
@@ -44,7 +41,7 @@ export class Buyer {
 
     clearAll(): void {
         this.buyer = {
-            payment: '',
+            payment: 'online', // допустимое значение по умолчанию
             email: '',
             phone: '',
             address: '',
