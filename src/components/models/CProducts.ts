@@ -1,8 +1,8 @@
 import { IProduct } from "../../types/index.ts";
 
 export class Products {
-    protected products!: IProduct[];
-    protected currentProduct!: IProduct;
+    protected products: IProduct[] = [];
+    protected currentProduct: IProduct | null = null;
 
     constructor() {}
 
@@ -18,13 +18,11 @@ export class Products {
         return this.products;
     }
 
-    getProductById(id: string): IProduct {
-        const finded = this.products.find(element => element.id === id);
-        if (finded) return finded;
-        else throw new Error('Item is not found');
+    getProductById(id: string): IProduct | undefined {
+        return this.products.find(element => element.id === id);
     }
 
-    getProduct(): IProduct {
+    getProduct(): IProduct | null {
         return this.currentProduct;
     }
 }
