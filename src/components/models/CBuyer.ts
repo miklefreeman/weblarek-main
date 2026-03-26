@@ -2,7 +2,7 @@ import { IBuyer, TPayment, TErrors } from "../../types/index.ts";
 
 export class Buyer {
     protected buyer: IBuyer = {
-        payment: 'online', // допустимое значение по умолчанию
+        payment: '' as TPayment, // пустое значение, пользователь должен выбрать сам
         email: '',
         phone: '',
         address: '',
@@ -41,7 +41,7 @@ export class Buyer {
 
     clearAll(): void {
         this.buyer = {
-            payment: 'online', // допустимое значение по умолчанию
+            payment: '' as TPayment, // очищаем, не задаём значение по умолчанию
             email: '',
             phone: '',
             address: '',
