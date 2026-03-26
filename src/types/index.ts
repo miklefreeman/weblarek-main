@@ -33,15 +33,12 @@ export interface IOrderResponse {
     total: number;
 }
 
-export type OrderForm = IBuyer;
+// Удалён дубликат OrderForm
 
 export type TErrors = Partial<Record<keyof IBuyer, string>>;
 
-export interface IOrder {
-    payment: string;
-    email: string;
-    phone: string;
-    address: string;
+// Исправлен IOrder: использует расширение IBuyer вместо дублирования полей
+export interface IOrder extends IBuyer {
     total: number;
     items: string[];
 }
