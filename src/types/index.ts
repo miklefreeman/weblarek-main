@@ -5,7 +5,8 @@ export interface IApi {
     post<T extends object>(uri: string, data: object, method?: ApiPostMethods): Promise<T>;
 }
 
-export type TPayment = 'online' | 'offline';
+// ИСПРАВЛЕНО: добавляем пустую строку для начального состояния
+export type TPayment = '' | 'online' | 'offline';
 
 export interface IProduct {
     id: string;
@@ -33,11 +34,8 @@ export interface IOrderResponse {
     total: number;
 }
 
-// Удалён дубликат OrderForm
-
 export type TErrors = Partial<Record<keyof IBuyer, string>>;
 
-// Исправлен IOrder: использует расширение IBuyer вместо дублирования полей
 export interface IOrder extends IBuyer {
     total: number;
     items: string[];

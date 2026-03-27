@@ -7,20 +7,22 @@ export interface IWebLarekAPI {
     orderProducts: (order: IOrder) => Promise<IOrderResponse>;
 }
 
-export class WebLarekAPI extends Api implements IWebLarekAPI {
+export class WebLarekAPI implements IWebLarekAPI {
+    private api: Api;  // 👈 композиция: храним экземпляр Api
+
     constructor(baseUrl: string, options?: RequestInit) {
-        super(baseUrl, options);
+        this.api = new Api(baseUrl, options);  // 👈 создаем Api внутри
     }
 
     getProductItem(id: string): Promise<IProduct> {
-        return this.get(`/product/${id}`);
+        return this.api.get(`/product/${id}`);
     }
 
     getProductList(): Promise<IProduct[]> {
-        return this.get('/product').then((data: ApiListResponse<IProduct>) => data.items);
+        return this.api.get('/product').then((data: ApiListResponse<IProduct>) => data.items);
     }
 
     orderProducts(order: IOrder): Promise<IOrderResponse> {
-        return this.post('/order', order);
+        return this.api.post('/order', order);
     }
 }

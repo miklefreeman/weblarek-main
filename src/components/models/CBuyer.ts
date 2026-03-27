@@ -2,7 +2,7 @@ import { IBuyer, TPayment, TErrors } from "../../types/index.ts";
 
 export class Buyer {
     protected buyer: IBuyer = {
-        payment: '' as TPayment, // пустое значение, пользователь должен выбрать сам
+        payment: '',  // ✅ теперь пустая строка допустима для TPayment
         email: '',
         phone: '',
         address: '',
@@ -29,9 +29,9 @@ export class Buyer {
     validate(): TErrors {
         const err: TErrors = {};
         if (!this.buyer.payment) err.payment = 'Не выбран вид оплаты';
-        if (this.buyer.email === '') err.email = 'Укажите адрес электронной почты';
-        if (this.buyer.phone === '') err.phone = 'Укажите номер мобильного телефона';
-        if (this.buyer.address === '') err.address = 'Укажите адрес';
+        if (!this.buyer.email) err.email = 'Укажите адрес электронной почты';
+        if (!this.buyer.phone) err.phone = 'Укажите номер мобильного телефона';
+        if (!this.buyer.address) err.address = 'Укажите адрес';
         return err;
     }
 
@@ -41,7 +41,7 @@ export class Buyer {
 
     clearAll(): void {
         this.buyer = {
-            payment: '' as TPayment, // очищаем, не задаём значение по умолчанию
+            payment: '',
             email: '',
             phone: '',
             address: '',
