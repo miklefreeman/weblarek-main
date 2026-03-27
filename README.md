@@ -1,33 +1,4 @@
-Проектная работа "Веб-ларек" (часть 1)
 
-Стек: HTML, SCSS, TS, Vite
-
-## Структура проекта
-
-- src/ — исходные файлы проекта
-- src/components/ — папка с компонентами
-- src/components/base/ — папка с базовым кодом
-- src/components/models/ — папка с моделями данных
-- src/types/index.ts — файл с типами
-- src/main.ts — точка входа приложения
-- src/utils/constants.ts — файл с константами
-- src/utils/data.ts — файл с тестовыми данными
-
-## Установка и запуск
-
-```bash
-npm install
-npm run dev
-Архитектура приложения
-Код приложения разделен на слои согласно парадигме MVP (Model-View-Presenter):
-
-Model — слой данных, отвечает за хранение и изменение данных.
-
-View — слой представления (будет реализован во второй части).
-
-Presenter — связывает данные и представление (частично реализован в main.ts для тестирования).
-
-Базовый код
 Класс Component
 Базовый класс для всех компонентов интерфейса.
 
@@ -70,8 +41,7 @@ emit<T>(event: string, data?: T): void — инициализация событ
 trigger<T>(event: string, context?: Partial<T>): (data: T) => void — создание триггера события
 
 Типы данных
-Товар (IProduct):
-
+Товар (IProduct)
 typescript
 interface IProduct {
     id: string;           // уникальный идентификатор товара
@@ -81,21 +51,19 @@ interface IProduct {
     category: string;     // категория товара (например, "софт", "хард", "другое")
     price: number | null; // цена товара (null означает "бесценно" или недоступно)
 }
-Покупатель (IBuyer):
-
+Покупатель (IBuyer)
 typescript
 interface IBuyer {
-    payment: TPayment;   // способ оплаты: 'online' или 'offline'
+    payment: TPayment;   // способ оплаты
     email: string;       // электронная почта покупателя
     phone: string;       // номер телефона покупателя
     address: string;     // адрес доставки
 }
 
-type TPayment = 'online' | 'offline'; // тип для способа оплаты
-Заказ (IOrderRequest, IOrderResponse):
-
+type TPayment = '' | 'online' | 'offline'; // тип для способа оплаты (пустая строка для начального состояния)
+Заказ (IOrder, IOrderResponse)
 typescript
-interface IOrderRequest extends IBuyer {
+interface IOrder extends IBuyer {
     total: number;       // общая стоимость заказа
     items: string[];     // массив id выбранных товаров
 }
@@ -104,6 +72,8 @@ interface IOrderResponse {
     id: string;          // идентификатор заказа, присвоенный сервером
     total: number;       // итоговая сумма заказа
 }
+
+type TErrors = Partial<Record<keyof IBuyer, string>>; // тип для ошибок валидации
 Модели данных
 Класс Products (Catalog)
 Хранит массив всех товаров и выбранный товар.
@@ -160,19 +130,19 @@ clearAll(): void — очищает все данные
 
 Слой коммуникации
 Класс WebLarekAPI
-Наследуется от Api. Отвечает за взаимодействие с сервером.
+Использует композицию с классом Api (содержит экземпляр Api внутри). Отвечает за взаимодействие с сервером.
 
 Конструктор:
 
-constructor(baseUrl: string, options?: RequestInit)
+constructor(baseUrl: string, options?: RequestInit) — создает экземпляр Api для работы с сервером
 
 Методы:
 
 getProductList(): Promise<IProduct[]> — GET запрос на /product, возвращает массив товаров
 
-getProductItem(id: string): Promise<IProduct> — GET запрос на /product/{id}, возвращает товар
+getProductItem(id: string): Promise<IProduct> — GET запрос на /product/{id}, возвращает товар по идентификатору
 
-orderProducts(order: IOrder): Promise<IOrderResponse> — POST запрос на /order, отправляет заказ
+orderProducts(order: IOrder): Promise<IOrderResponse> — POST запрос на /order, отправляет данные заказа на сервер
 
 Точка входа (main.ts)
 В первой части main.ts выполняет:
@@ -193,4 +163,12 @@ buyerModel — данные покупателя
 
 Покупатель: setPayment, setAddress, setEmail, setPhone, getAllInfo, validate (с корректными и некорректными данными), clearAll
 
-Запрос к серверу через WebLarekAPI.getProductList() и сохранение полученных товаров в модель каталога с добавлением CDN к изображениям.
+Запрос к серверу:
+
+Вызов WebLarekAPI.getProductList()
+
+Добавление CDN к изображениям товаров
+
+Сохранение полученных товаров в модель каталога
+
+Вывод результатов в консоль
